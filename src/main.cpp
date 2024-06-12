@@ -17,6 +17,8 @@ void loop() {
     int potValue = analogRead(potentiometerPin);
     int motorSpeed = map(potValue, 0, 1023, 0, 255);
     analogWrite(outputPWM, motorSpeed);
+    digitalWrite(outputA, HIGH);
+    digitalWrite(outputB, LOW);
 
     static unsigned long lastTime = 0;
     unsigned long currentTime = millis();
@@ -30,6 +32,6 @@ void loop() {
         Serial.println(motorSpeed);
     }
 
-    
+
 
 }
