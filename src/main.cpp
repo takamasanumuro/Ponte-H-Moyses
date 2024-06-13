@@ -1,37 +1,43 @@
 #include <Arduino.h>
-#define outputPWM 9
-#define outputA 8  
-#define outputB 7 
-#define potentiometerPin A0
-#define buttonChangeDirectionPin 6
+#define motorOutputPWM 3
+#define motorOutputA 4  
+#define motorOutputB 5 
+#define potentiometerSignalPin A6
+#define potentiometerPowerPin  A5
+#define potentiometerGroundPin A4
+#define buttonChangeMotorDirectionPin A3
+#define buttonChangeMotorDirectionGND A2
 
 void setup() {
     Serial.begin(9600);
-    pinMode(outputPWM, OUTPUT);
-    pinMode(outputA, OUTPUT);
-    pinMode(outputB, OUTPUT);
-    pinMode(potentiometerPin, INPUT);
-    pinMode(buttonChangeDirectionPin, INPUT_PULLUP);
+    pinMode(motorOutputPWM, OUTPUT);
+    pinMode(motorOutputA, OUTPUT);
+    pinMode(motorOutputB, OUTPUT);
+    pinMode(potentiometerGroundPin, OUTPUT); digitalWrite(potentiometerGroundPin, LOW);
+    pinMode(potentiometerPowerPin, OUTPUT);  digitalWrite(potentiometerPowerPin, HIGH);
+    pinMode(potentiometerSignalPin, INPUT); 
+    pinMode(buttonChangeMotorDirectionPin, INPUT_PULLUP);
+    pinMode(buttonChangeMotorDirectionGND, OUTPUT); digitalWrite(buttonChangeMotorDirectionGND, LOW);
 
 }
 
 void loop() {
 
-    bool buttonState = digitalRead(buttonChangeDirectionPin);
+    bool buttonState = digitalRead(buttonChangeMotorDirectionPin);
 
     if (buttonState == LOW) {
-        digitalWrite(outputA, LOW);
-        digitalWrite(outputB, HIGH);
+        digitalWrite(motorOutputA, LOW);
+        digitalWrite(motorOutputB, HIGH);
     } else {
-        digitalWrite(outputA, HIGH);
-        digitalWrite(outputB, LOW);
+        digitalWrite(motorOutputA, HIGH);
+        digitalWrite(motorOutputB, LOW);
     }
 
-    int potValue = analogRead(potentiometerPin);
+    int potValue = analogRead(potentiometerSignalPin);
     int motorSpeed = map(potValue, 0, 1023, 0, 255);
-    analogWrite(outputPWM, motorSpeed);
-    digitalWrite(outputA, HIGH);
-    digitalWrite(outputB, LOW);
+    analogWrite(motorOutputPWM, motorSpeed);
+    digitalWrite(motorOutputA, HIGH);
+    digitalWrite(motorOutputB, LOW);
 
 
 
